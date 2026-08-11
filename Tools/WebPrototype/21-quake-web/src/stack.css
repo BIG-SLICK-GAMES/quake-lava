@@ -1,0 +1,45 @@
+.tile {
+  position: relative;
+  overflow: visible;
+  border: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
+.stack-card {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  transform: translate(var(--stack-x), var(--stack-y));
+  border: 3px solid #080808;
+  background-color: #121a23;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 125% 125%;
+  clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0 92%, 0 8%);
+  box-shadow: inset 0 0 0 2px #3d4650, 0 3px 2px #000b;
+  pointer-events: none;
+}
+
+.game .rack button.held-tile-image {
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 125% 125%;
+  clip-path: polygon(8% 0, 92% 0, 100% 8%, 100% 92%, 92% 100%, 8% 100%, 0 92%, 0 8%);
+}
+
+.tile small {
+  position: absolute;
+  right: -8px;
+  top: -10px;
+  z-index: 10;
+  padding: 1px 3px;
+  border: 1px solid #ff6a00;
+  background: #140b07;
+  font-size: 8px;
+}
+
+.tile:hover .stack-card:last-of-type {
+  outline: 2px solid #ff6a00;
+}
