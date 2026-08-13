@@ -1,0 +1,136 @@
+/* Align the unchanged interactive structure to the openings in game.jpg. */
+.game {
+  padding: 0;
+  background-image: url('/assets/game-template.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+
+.game::before {
+  background: transparent;
+}
+
+.game header {
+  position: absolute;
+  top: 2.2%;
+  left: 8%;
+  width: 84%;
+  background-color: #0b0705;
+  background-image: url('/assets/top-navigation-bar1.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  border-color: transparent;
+}
+
+.game header > div {
+  padding: 3px 6px;
+  background: #100a07d9;
+  text-shadow: 0 1px 2px #000;
+}
+
+.game header > button {
+  border-color: transparent;
+  background: transparent;
+  color: transparent;
+}
+
+/* Preserve the first grid cell while moving only the live score number into
+   the empty black recess painted into top-navigation-bar1.jpg. */
+.game header .score-readout {
+  position: relative;
+  left: 49px;
+  width: 62px;
+  padding: 0;
+  background: transparent;
+  color: transparent;
+  font-size: 0;
+  text-align: center;
+}
+
+.game header .score-readout b {
+  display: block;
+  color: #ff7a20;
+  font-size: 14px;
+  line-height: 20px;
+  letter-spacing: 3px;
+  text-shadow: 0 0 5px #ff4b00, 0 2px 2px #000;
+}
+
+
+.game .board {
+  position: absolute;
+  top: 29.7%;
+  left: 20.7%;
+  width: 71.5%;
+  height: 40.2%;
+  margin: 0;
+  padding: 3.5%;
+  gap: 6px;
+  border: 0;
+  background: transparent;
+}
+
+.game .timer {
+  position: absolute;
+  top: 29.7%;
+  left: 7.7%;
+  width: 7.2%;
+  height: 39.7%;
+  border: 0;
+  border-radius: 10px;
+  background: #080402aa;
+}
+
+.game .rack {
+  position: absolute;
+  top: 73.9%;
+  left: 10.4%;
+  width: 80.3%;
+  height: 8.8%;
+  margin: 0;
+  gap: 5.5%;
+  padding: 1.6% 1.4%;
+}
+
+.game .rack button {
+  border: 0;
+  background: transparent;
+  box-shadow: none;
+  color: #f4d49b;
+  text-shadow: 0 2px 2px #000;
+}
+
+.game .message {
+  position: absolute;
+  top: 82.4%;
+  left: 9%;
+  width: 82%;
+  margin: 0;
+}
+
+.game .quake {
+  position: absolute;
+  top: 86.2%;
+  left: 27.5%;
+  width: 45%;
+  height: 8.2%;
+  margin: 0;
+  background-color: transparent;
+  background-image: url('/assets/quake-button2.png');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: transparent;
+  font-size: 0;
+}
+
+.game .quake:active {
+  transform: translateY(3px) scale(0.98);
+}
+
+.game .modal {
+  position: absolute;
+  inset: 0;
+}
