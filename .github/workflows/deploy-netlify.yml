@@ -1,0 +1,26 @@
+name: Deploy dev to Netlify
+
+on:
+  push:
+    branches: [dev]
+
+concurrency:
+  group: netlify-production
+  cancel-in-progress: true
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+      - run: npm ci
+      - run: npm run build
+      - name: Deploy production site
+        run: npx netlify-cli deploy --prod --dir=dist --functions=netlify/functions --site="$NETLIFY_SITE_ID" --auth="$NETLIFY_AUTH_TOKEN" --message="dev ${GITHUB_SHA}"
+        env:
+          NETLIFY_AUTH_TOKEN: ${{ secrets.NETLIFY_AUTH_TOKEN }}
+          NETLIFY_SITE_ID: ${{ secrets.NETLIFY_SITE_ID }}
