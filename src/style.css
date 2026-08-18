@@ -42,3 +42,95 @@
 .logout-confirm{position:absolute;inset:0;z-index:30;display:grid;place-items:center;padding:28px;background:#050302e8}.logout-confirm-card{width:100%;padding:28px 20px;border:3px solid #75341e;background:radial-gradient(circle at top,#29140e,#090504 72%);box-shadow:0 0 28px #000;text-align:center}.logout-confirm-card h2{margin:0 0 14px;color:#ef5a25;font-size:27px}.logout-confirm-card p{margin:0 0 24px;color:#f0d3bd;font-size:14px}.logout-confirm-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.logout-confirm-actions button{min-height:50px;cursor:pointer}.logout-cancel{background:linear-gradient(#29201c,#100c0a)!important;color:#e0c9ba!important}.logout-submit{border-color:#ee6330!important;background:linear-gradient(#e94d19,#861b0a)!important;color:#fff!important}
 
 .game-total{display:flex;align-items:center;justify-content:center;gap:10px;margin:0;text-align:center;font-size:20px;line-height:1;text-shadow:0 2px #000}.game-total img{display:block;width:49px;height:49px;object-fit:contain;margin:0}
+
+/* Lobby button crops taken directly from lobby1.jpeg. */
+.shell .lobby-art-button {
+  min-height: 0;
+  aspect-ratio: 716 / 207;
+  padding: 0;
+  border: 0;
+  background-color: transparent;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+  color: transparent;
+  font-size: 0;
+  cursor: pointer;
+}
+.shell .lobby-art-play { background-image: url('/assets/lobby-buttons/play.jpg'); }
+.shell .lobby-art-how { background-image: url('/assets/lobby-buttons/how-to-play.jpg'); }
+.shell .lobby-art-settings { background-image: url('/assets/lobby-buttons/settings.jpg'); }
+.shell .lobby-art-leaderboards { background-image: url('/assets/lobby-buttons/leaderboards.jpg'); }
+
+/* Interactive pause controls aligned to pause.jpg. */
+.game .pause-modal {
+  display: block;
+  padding: 0;
+  background-color: #050302;
+  background-image: url('/assets/pause.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.game .pause-modal h2 {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.game .pause-modal > button {
+  position: absolute;
+  left: 8.5%;
+  width: 83%;
+  height: 12%;
+  padding: 0;
+  border: 0;
+  background: transparent;
+  color: transparent;
+  cursor: pointer;
+}
+.game .pause-modal > button:nth-of-type(1) { top: 31.6%; }
+.game .pause-modal > button:nth-of-type(2) { top: 44.7%; }
+.game .pause-modal > button:nth-of-type(3) { top: 57.7%; }
+.game .pause-modal > button:nth-of-type(4) { top: 70.6%; }
+
+/* Interactive quit confirmation aligned to exit-game.jpg. */
+.game .quit-confirm {
+  display: block;
+  padding: 0;
+  border: 0;
+  background-color: #030201;
+  background-image: url('/assets/exit-game.jpg');
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: 100% 100%;
+}
+.game .quit-confirm > h2,
+.game .quit-confirm > p {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+}
+.game .quit-confirm .quit-actions {
+  position: absolute;
+  top: 60.3%;
+  left: 16.4%;
+  width: 67.2%;
+  height: 9.7%;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 4.2%;
+}
+.game .quit-confirm .quit-actions button,
+.game .quit-confirm .quit-actions .quit-yes {
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: 0;
+  background: transparent !important;
+  color: transparent !important;
+  cursor: pointer;
+}

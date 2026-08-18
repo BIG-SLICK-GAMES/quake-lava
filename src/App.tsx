@@ -67,6 +67,7 @@ export default function App() {
   const [quitConfirm, setQuitConfirm] = useState(false);
   const [logoutConfirm, setLogoutConfirm] = useState(false);
   const previousQuake = useRef(0);
+  const heartbeatAudio = useRef<HTMLAudioElement | null>(null);
   const [screen, setScreen] = useState<Screen>(() =>
     load("quake.player", "") ? "lobby" : "login",
   );
@@ -85,7 +86,16 @@ export default function App() {
   const [leaderboard, setLeaderboard] = useState<LeaderboardEntry[]>(() =>
     cleanLeaderboard(load("quake.leaderboard", [])),
   );
+  const gameRef = useRef(game);
+  gameRef.current = game;
   const previous = useRef(performance.now());
+  const unlockHeartbeatAudio = () => {
+    const audio = heartbeatAudio.current ?? new Audio("/assets/audio/heartbeat.wav");
+    heartbeatAudio.current = audio;
+    audio.volume = Math.min(1, Math.max(0, settings.sfxVolume / 100));
+    audio.currentTime = 0;
+    void audio.play().catch(() => undefined);
+  };
   useEffect(() => {
     localStorage.setItem("quake.settings", JSON.stringify(settings));
   }, [settings]);
@@ -136,6 +146,36 @@ export default function App() {
     });
   }, [name, game.bestScore, screen]);
   useEffect(() => {
+    if (screen !== "game" || settings.sfxVolume <= 0) return;
+    const audio = heartbeatAudio.current ?? new Audio("/assets/audio/heartbeat.wav");
+    heartbeatAudio.current = audio;
+    let timer = 0;
+    let stopped = false;
+
+    const heartbeat = () => {
+      if (stopped) return;
+      const current = gameRef.current;
+      if (current.status !== "playing") {
+        timer = window.setTimeout(heartbeat, 120);
+        return;
+      }
+      const urgency = Math.min(1, Math.max(0, 1 - current.remaining / current.duration));
+      audio.volume = Math.min(1, (settings.sfxVolume / 100) * (0.72 + urgency * 0.28));
+      audio.playbackRate = 1 + urgency * 0.16;
+      audio.currentTime = 0;
+      void audio.play().catch(() => undefined);
+      const interval = 900 - urgency * 580;
+      timer = window.setTimeout(heartbeat, interval);
+    };
+
+    heartbeat();
+    return () => {
+      stopped = true;
+      window.clearTimeout(timer);
+      audio.pause();
+    };
+  }, [screen, settings.sfxVolume]);
+  useEffect(() => {
     if (game.quake < previousQuake.current) {
       previousQuake.current = game.quake;
       return;
@@ -144,7 +184,7 @@ export default function App() {
     previousQuake.current = game.quake;
     setQuakeShaking(false);
     const start = requestAnimationFrame(() => setQuakeShaking(true));
-    const stop = window.setTimeout(() => setQuakeShaking(false), 760);
+    const stop = window.setTimeout(() => setQuakeShaking(false), 540);
     return () => {
       cancelAnimationFrame(start);
       window.clearTimeout(stop);
@@ -164,6 +204,7 @@ export default function App() {
     return () => cancelAnimationFrame(frame);
   }, [screen]);
   const start = () => {
+    unlockHeartbeatAudio();
     setQuitConfirm(false);
     setGame(initialGame(playerBest(leaderboard, name)));
     setScreen("game");
@@ -201,10 +242,10 @@ export default function App() {
         <h1>21 QUAKE</h1>
         <h2>WELCOME, {name}</h2>
         <p>BEST SCORE {formatScore(game.bestScore)}</p>
-        <button onClick={start}>PLAY</button>
-        <button onClick={() => setScreen("how")}>HOW TO PLAY</button>
-        <button onClick={() => setScreen("settings")}>SETTINGS</button>
-        <button onClick={() => setScreen("leaderboards")}>LEADERBOARDS</button>
+        <button className="lobby-art-button lobby-art-play" onClick={start} aria-label="Play">PLAY</button>
+        <button className="lobby-art-button lobby-art-how" onClick={() => setScreen("how")} aria-label="How to Play">HOW TO PLAY</button>
+        <button className="lobby-art-button lobby-art-settings" onClick={() => setScreen("settings")} aria-label="Settings">SETTINGS</button>
+        <button className="lobby-art-button lobby-art-leaderboards" onClick={() => setScreen("leaderboards")} aria-label="Leaderboards">LEADERBOARDS</button>
       </Shell>
     );
   if (screen === "how")
@@ -436,17 +477,19 @@ export default function App() {
         <div className="lava" style={{ transform: `scaleY(${progress})` }} />
         <b>{Math.ceil(game.remaining)}</b>
       </div>
-      <div
-        className="game-total"
-        style={{ position: "absolute", top: "calc(155px - 0.4in)", left: "18%", width: "76%", zIndex: 3 }}
-      >
-        <span>TOTAL TILES:</span>
-        {totalTileLabel(total(game)) ? (
-          <img src={`/assets/total-tiles/${totalTileLabel(total(game))}.png`} alt={`Total ${total(game)}`} />
-        ) : (
-          <span>{total(game)}</span>
-        )}
-      </div>
+      {game.status !== "paused" && (
+        <div
+          className="game-total"
+          style={{ position: "absolute", top: "calc(155px - 0.4in)", left: "18%", width: "76%", zIndex: 3 }}
+        >
+          <span>TOTAL TILES:</span>
+          {totalTileLabel(total(game)) ? (
+            <img src={`/assets/total-tiles/${totalTileLabel(total(game))}.png`} alt={`Total ${total(game)}`} />
+          ) : (
+            <span>{total(game)}</span>
+          )}
+        </div>
+      )}
       <section className="board">
         {game.board.map((slot, i) => {
           const card = slot.cards.at(-1);
@@ -501,14 +544,14 @@ export default function App() {
         QUAKE
       </button>
       {game.status === "paused" && !quitConfirm && (
-        <div className="modal">
+        <div className="modal pause-modal">
           <h2>PAUSED</h2>
           <button onClick={() => setGame((g) => ({ ...g, status: "playing" }))}>
             RESUME
           </button>
           <button onClick={start}>RESTART</button>
           <button onClick={() => setScreen("settings")}>SETTINGS</button>
-          <button onClick={() => setScreen("lobby")}>EXIT</button>
+          <button onClick={() => setQuitConfirm(true)}>EXIT</button>
         </div>
       )}
       {quitConfirm && (

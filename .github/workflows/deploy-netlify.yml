@@ -1,7 +1,6 @@
 name: Deploy dev to Netlify
 
 on:
-  workflow_dispatch:
   push:
     branches: [dev]
 
