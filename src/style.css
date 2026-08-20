@@ -14,13 +14,6 @@
 
 .quit-confirm{z-index:20;text-align:center;align-items:stretch;background:radial-gradient(circle at center,#28120cf5,#050302fa 72%);border:2px solid #8e351b}.quit-confirm h2{margin:0;color:#ff6a28;font-size:28px;text-shadow:0 0 12px #e33b0d}.quit-confirm p{margin:0;color:#f1d0b8;font-size:13px;line-height:1.6}.quit-actions{display:grid;grid-template-columns:1fr 1fr;gap:12px}.quit-actions button{width:100%;cursor:pointer}.quit-actions .quit-yes{background:linear-gradient(#e84b18,#841b0a);border-color:#ef6b32;color:#fff}
 
-.game .quake{transform:translateY(-.1in)}
-
-.game .rack>button:first-child{transform:translate(-.04in,-.04in)}
-.game .rack>button:nth-child(2){transform:translate(-.03in,-.03in)}
-.game .rack>button:nth-child(3){transform:translate(-.04in,-.02in)}
-.game .rack>button:nth-child(4){transform:translate(-.04in,-.02in)}
-
 .game .rack>button.held-tile-image{background-color:transparent;background-repeat:no-repeat;background-position:center;background-size:contain}
 
 .leaderboard-list li:nth-child(3)>span{transform:translateY(-.06in)}

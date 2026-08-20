@@ -7,7 +7,10 @@ export type Game = { board:BoardSlot[]; held:Card[]; score:number; bestScore:num
 
 export const LABELS = ["A","2","3","4","5","6","7","8","9","10","J","Q","K"];
 export const valueOf = (label:string) => label === "A" ? 1 : ["J","Q","K"].includes(label) ? 10 : Number(label);
-export const drawCard = ():Card => { const label=LABELS[Math.floor(Math.random()*LABELS.length)]; return {id:crypto.randomUUID(),label,value:valueOf(label)} };
+let cardIdSequence = 0;
+const createCardId = () => globalThis.crypto?.randomUUID?.()
+  ?? `card-${Date.now().toString(36)}-${(cardIdSequence++).toString(36)}-${Math.random().toString(36).slice(2)}`;
+export const drawCard = ():Card => { const label=LABELS[Math.floor(Math.random()*LABELS.length)]; return {id:createCardId(),label,value:valueOf(label)} };
 export const createBoard = ():BoardSlot[] => Array.from({length:25},(_,i)=>({id:`slot-${i+1}`,cards:[drawCard()]}));
 export const roundDuration = (quake:number) => Math.max(5,60-(quake-1)*5);
 export const formatScore = (score:number) => score.toString().padStart(4,"0");

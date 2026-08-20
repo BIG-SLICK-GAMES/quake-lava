@@ -445,6 +445,7 @@ export default function App() {
     );
   const progress = 1 - game.remaining / game.duration;
   return (
+    <div className="game-stage">
     <main className={`phone game${quakeShaking ? " quake-shaking" : ""}`}>
       <header>
         <div className="score-readout">
@@ -474,14 +475,14 @@ export default function App() {
         </button>
       </header>
       <div className="timer">
-        <div className="lava" style={{ transform: `scaleY(${progress})` }} />
+        <div
+          className="lava"
+          style={{ clipPath: `inset(${(1 - progress) * 100}% 0 0 0)` }}
+        />
         <b>{Math.ceil(game.remaining)}</b>
       </div>
       {game.status !== "paused" && (
-        <div
-          className="game-total"
-          style={{ position: "absolute", top: "calc(155px - 0.4in)", left: "18%", width: "76%", zIndex: 3 }}
-        >
+        <div className="game-total">
           <span>TOTAL TILES:</span>
           {totalTileLabel(total(game)) ? (
             <img src={`/assets/total-tiles/${totalTileLabel(total(game))}.png`} alt={`Total ${total(game)}`} />
@@ -508,8 +509,6 @@ export default function App() {
                   aria-label={stackCard.label}
                   style={
                     {
-                      "--stack-x": `${layer * 4}px`,
-                      "--stack-y": `${layer * -4}px`,
                       zIndex: layer + 1,
                       backgroundImage: tileImage(stackCard.label),
                     } as React.CSSProperties
@@ -585,6 +584,7 @@ export default function App() {
         </div>
       )}
     </main>
+    </div>
   );
 }
 function Shell({

@@ -11,7 +11,6 @@
   inset: 0;
   display: grid;
   place-items: center;
-  transform: translate(var(--stack-x), var(--stack-y));
   border: 3px solid #080808;
   background-color: #121a23;
   background-position: center;

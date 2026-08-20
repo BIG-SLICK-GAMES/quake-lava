@@ -5,4 +5,5 @@ import "./style.css";
 import "./stack.css";
 import "./template.css";
 import "./quake.css";
+import "./responsive-game.css";
 createRoot(document.getElementById("root")!).render(<React.StrictMode><App /></React.StrictMode>);
